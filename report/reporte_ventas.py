@@ -6,6 +6,7 @@ import logging
 
 class ReporteVentas(models.AbstractModel):
     _name = 'report.l10n_gt_extra.reporte_ventas'
+    _description = 'Libro de Ventas'
 
     def lineas(self, datos):
         totales = {}
@@ -133,7 +134,7 @@ class ReporteVentas(models.AbstractModel):
                     linea[tipo_linea+'_exento'] += r['total_excluded']
                     totales[tipo_linea]['exento'] += r['total_excluded']
 
-                linea['total'] += precio * l.quantity
+            linea['total'] += linea['compra'] + linea['compra_exento'] + linea['servicio'] + linea['servicio_exento'] + linea['combustible'] + linea['combustible_exento'] + linea['importacion'] + linea['importacion_exento'] + linea['iva']
 
             lineas.append(linea)
 

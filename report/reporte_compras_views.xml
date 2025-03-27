@@ -12,13 +12,12 @@
                 <div class="page">
                     <h2><span t-esc="current_company_id.name"/>: Libro de compras y servicios</h2>
 
-
-                    <div class="row mt32">
-                        <div class="col-xs-4">
+                    <div class="row my-2">
+                        <div class="col-6">
                             <strong>Número de identificación tributaria:</strong> <span t-field="current_company_id.vat"/><br/>
                             <strong>Nombre comercial:</strong> <span t-esc="direccion_diario.name if direccion_diario else current_company_id.partner_id.name"/><br/>
                         </div>
-                        <div class="col-xs-4">
+                        <div class="col-6">
                             <strong>Domicilio fiscal:</strong> <span t-esc="direccion_diario.street if direccion_diario else current_company_id.partner_id.street"/><br/>
                             <strong>Registro del:</strong> <span t-esc="data['fecha_desde']" t-options='{"widget": "date"}'/> al: <span t-esc="data['fecha_hasta']" t-options='{"widget": "date"}'/><br/>
                         </div>
@@ -140,26 +139,22 @@
                         </tbody>
                     </table>
 
-                    <table>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    Cantidad de facturas:
-                                </td>
-                                <td class="text-right">
-                                    <span t-esc="'{0:,.0f}'.format(result['totales']['num_facturas'])"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Total credito fiscal:
-                                </td>
-                                <td class="text-right">
-                                    <span t-esc="result['totales']['compra']['iva'] + result['totales']['servicio']['iva'] + result['totales']['combustible']['iva'] + result['totales']['importacion']['iva'] + result['totales']['pequeño']['iva']" t-options="{'widget': 'monetary', 'display_currency': current_company_id.currency_id}"/>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <strong>Cantidad de facturas:</strong>
+                        </div>
+                        <div class="col-6">
+                            <span t-esc="'{0:,.0f}'.format(result['totales']['num_facturas'])"/>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">
+                            <strong>Total crédito fiscal:</strong>
+                        </div>
+                        <div class="col-6">
+                            <span t-esc="result['totales']['compra']['iva'] + result['totales']['servicio']['iva'] + result['totales']['combustible']['iva'] + result['totales']['importacion']['iva'] + result['totales']['pequeño']['iva']" t-options="{'widget': 'monetary', 'display_currency': current_company_id.currency_id}"/>
+                        </div>
+                    </div>
 
                     <div><strong>Resumen:</strong></div>
                     <table class="table table-condensed">

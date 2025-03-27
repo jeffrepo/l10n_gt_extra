@@ -6,6 +6,7 @@ import logging
 
 class ReporteCompras(models.AbstractModel):
     _name = 'report.l10n_gt_extra.reporte_compras'
+    _description = 'Libro de Compras'
 
     def lineas(self, datos):
         totales = {}
@@ -23,6 +24,7 @@ class ReporteCompras(models.AbstractModel):
             ('journal_id','in',journal_ids),
             ('date','<=',datos['fecha_hasta']),
             ('date','>=',datos['fecha_desde']),
+            ('amount_total','!=',0),
         ]
         
         if 'type' in self.env['account.move'].fields_get():
@@ -108,7 +110,7 @@ class ReporteCompras(models.AbstractModel):
                             linea['iva'] += i['amount']
                             totales[tipo_linea]['iva'] += i['amount']
                             totales[tipo_linea]['total'] += i['amount']
-                        elif i['amount'] > 0:
+                        elif (i['amount'] > 0 and tipo != 'NC') or (i['amount'] < 0 and tipo == 'NC'):
                             linea[tipo_linea+'_exento'] += i['amount']
                             totales[tipo_linea]['exento'] += i['amount']
                             totales[tipo_linea]['total'] += i['amount']
@@ -116,7 +118,7 @@ class ReporteCompras(models.AbstractModel):
                     linea[tipo_linea+'_exento'] += r['total_excluded']
                     totales[tipo_linea]['exento'] += r['total_excluded']
 
-                linea['total'] += precio * l.quantity
+            linea['total'] += linea['compra'] + linea['compra_exento'] + linea['servicio'] + linea['servicio_exento'] + linea['combustible'] + linea['combustible_exento'] + linea['importacion'] + linea['importacion_exento'] + linea['pequeño'] + linea['pequeño_exento'] + linea['iva']
 
             lineas.append(linea)
             
